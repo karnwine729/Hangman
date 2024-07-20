@@ -1,36 +1,33 @@
 public class Display {
     private int bodyparts;
-    private String word;
-    private int wordLength;
-    private int remainingLetters;
 
     public Display() {
-        this.bodyparts = 0;
+        this.bodyparts = 0;        
     }
 
     public void resetBodyparts() {
         this.bodyparts = 0;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-        this.wordLength = word.length();
-    }
-
-    public void draw() {
+    public void draw(String word, boolean[] lettersGuessed) {
         printTopRows();
         printHeadRow();
         printTorsoRow();
         printLegRow();
         printBottomRows();        
-        printWord();
+        printWord(word, lettersGuessed);
     }
 
-    private void printWord() {
+    private void printWord(String word, boolean[] lettersGuessed) {
         System.out.println();
-        // for (int i = 0; i <= wordLength; i++) {
-
-        // }
+        System.out.println(word.length() + " letter word:");
+        for (int i = 0; i < word.length(); i++) {
+            if (lettersGuessed[i] == false) {
+                System.out.print("_");
+                continue;
+            }
+            System.out.print(word.charAt(i));
+        }
     }
 
     private void printTopRows() {        

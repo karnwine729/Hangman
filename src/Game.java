@@ -4,9 +4,12 @@ import java.util.Random;
 public class Game {
     private Display display;
     private Words words;
+    private String word;
     private Scanner scanner;
     private Random random;
     private boolean gameover;
+    private boolean[] lettersGuessed;
+    private int rng;
 
     public Game() {
         this.display = new Display();
@@ -22,10 +25,10 @@ public class Game {
     }
 
     private void start() {
-
         words.initData();
-        int rng = random.nextInt(words.getWordCount());
-        display.setWord(words.getWord(rng));
+        this.rng = random.nextInt(words.getWordCount());
+        this.word = words.getWord(rng);
+        this.lettersGuessed = new boolean[word.length()];
         display.resetBodyparts();        
         
         System.out.println("-".repeat(50));
@@ -39,12 +42,14 @@ public class Game {
     private void run() {
         //while(!gameover) {
             
-            display.draw();
-            System.out.print("Enter a letter: ");
+            display.draw(this.word, this.lettersGuessed);
+            System.out.print("\n\nEnter a letter: ");
             String input = scanner.next();
             scanner.nextLine();
             char letter = input.charAt(0);
             
         //}
     }
+
+    
 }
