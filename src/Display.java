@@ -1,9 +1,20 @@
 public class Display {
-    public int bodyparts;
-    //private int bodyparts;
+    private int bodyparts;
+    private String word;
+    private int wordLength;
+    private int remainingLetters;
 
     public Display() {
         this.bodyparts = 0;
+    }
+
+    public void resetBodyparts() {
+        this.bodyparts = 0;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+        this.wordLength = word.length();
     }
 
     public void draw() {
@@ -11,7 +22,15 @@ public class Display {
         printHeadRow();
         printTorsoRow();
         printLegRow();
-        printBottomRows();
+        printBottomRows();        
+        printWord();
+    }
+
+    private void printWord() {
+        System.out.println();
+        // for (int i = 0; i <= wordLength; i++) {
+
+        // }
     }
 
     private void printTopRows() {        
@@ -53,7 +72,7 @@ public class Display {
             return;
         }
         if (bodyparts == 6) {
-            System.out.println(" /|   |  ");
+            System.out.println(" / \\   |  ");
             return;
         }       
         System.out.println(" /|\\  |  ");
