@@ -9,6 +9,14 @@ public class Display {
         this.bodyparts = 0;
     }
 
+    public void addBodypart() {
+        this.bodyparts++;
+    }
+
+    public int getBodyparts() {
+        return this.bodyparts;
+    }
+
     public void draw(String word, boolean[] lettersGuessed) {
         printTopRows();
         printHeadRow();
