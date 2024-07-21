@@ -30,7 +30,8 @@ public class Game {
 
     private boolean end() {
         System.out.print("Enter \"y\" or \"yes\" to play again: ");
-        String input = scanner.nextLine().toLowerCase();
+        String input = scanner.next().toLowerCase();
+        scanner.nextLine();
         if (input.equals("y") || input.equals("yes")) return true;
         return false;
     }
@@ -63,9 +64,9 @@ public class Game {
     }
 
     private void checkWin() {
-        boolean wordIsGuessed = true;;
+        boolean wordIsGuessed = true;
         for (int i = 0; i < this.lettersGuessed.length; i++) {
-            if (this.lettersGuessed[i] = false) {
+            if (this.lettersGuessed[i] == false) {
                 wordIsGuessed = false;
                 break;
             }
@@ -87,9 +88,6 @@ public class Game {
         boolean correctGuess = false;
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == letter) {
-                System.out.println("i: " + i);
-                System.out.println("word.charAt(i): " + word.charAt(i));
-                System.out.println("letter: " + letter);
                 this.lettersGuessed[i] = true;
                 correctGuess = true;                
             }

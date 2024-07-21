@@ -73,11 +73,12 @@ public class Display {
             return;
         }
         if (bodyparts == 5) {
-            System.out.println("  |   |  ");
+            System.out.println(" /    |  "x
+            );
             return;
         }
         if (bodyparts == 6) {
-            System.out.println(" / \\   |  ");
+            System.out.println(" / \\  |  ");
             return;
         }       
         System.out.println(" /|\\  |  ");
