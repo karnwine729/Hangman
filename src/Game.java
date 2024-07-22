@@ -50,11 +50,9 @@ public class Game {
 
     private void run() {
         while(!gameover) {            
-            display.draw(this.word, this.lettersGuessed, this.bodyparts);
-            System.out.print("\n\nEnter a letter: ");
-            String input = scanner.next();
-            scanner.nextLine();
-            checkLetter(input.charAt(0), this.word);
+            display.draw(this.word, this.lettersGuessed, this.bodyparts, this.incorrectGuesses);
+            char inputChar = promptUser();
+            checkNewLetter(inputChar, this.word);            
             checkWin();
             checkLose();            
         }
@@ -71,6 +69,21 @@ public class Game {
         return false;
     }
 
+    private char promptUser() {        
+        while(true) {
+            System.out.print("\nEnter a letter: ");
+            String input = scanner.next();
+            scanner.nextLine();
+            char inputChar = input.charAt(0);
+            boolean guessed = checkPreviousLetters(inputChar);
+            if (guessed) {
+                System.out.println("Letter already guessed!");
+                continue;
+            }
+            return inputChar;            
+        }
+    }
+
     private void checkWin() {
         boolean wordIsGuessed = true;
         for (int i = 0; i < this.lettersGuessed.length; i++) {
@@ -80,7 +93,7 @@ public class Game {
             }
         }
         if (wordIsGuessed) {
-            display.draw(this.word, this.lettersGuessed, this.bodyparts);
+            display.draw(this.word, this.lettersGuessed, this.bodyparts, this.incorrectGuesses);
             System.out.println("\nYou guessed the word!");
             this.gameover = true;
         }
@@ -88,20 +101,29 @@ public class Game {
 
     private void checkLose() {
         if (this.bodyparts == 7) {
-            display.draw(this.word, this.lettersGuessed, this.bodyparts);
+            display.draw(this.word, this.lettersGuessed, this.bodyparts, this.incorrectGuesses);
             System.out.println("\n\nYou're hung!");
             this.gameover = true;            
         }
     }
 
-    private void checkLetter(char letter, String word) {
-        boolean correctGuess = false;
-        for (int i = 0; i < word.length(); i++) {
+    private boolean checkPreviousLetters(char letter) {
+        if (this.correctGuesses.contains(letter) || this.incorrectGuesses.contains(letter)) return true;
+        return false;
+    }
+
+    private void checkNewLetter(char letter, String word) {
+        boolean correctGuess = false;        
+        for (int i = 0; i < word.length(); i++) {            
             if (word.charAt(i) == letter) {
                 this.lettersGuessed[i] = true;
-                correctGuess = true;                
+                this.correctGuesses.add(letter);
+                correctGuess = true;
             }
         }
-        if (!correctGuess) this.bodyparts++;
+        if (!correctGuess) {
+            this.bodyparts++;
+            this.incorrectGuesses.add(letter);
+        }        
     }
 }
