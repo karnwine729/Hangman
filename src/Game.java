@@ -21,23 +21,16 @@ public class Game {
     }
 
     public void play() {
-        if(playAgain) {
+        while(playAgain) {            
             start();
             run();
-            this.playAgain = end();
+            playAgain = end();            
         }
-    }
-
-    private boolean end() {
-        System.out.print("Enter \"y\" or \"yes\" to play again: ");
-        String input = scanner.next().toLowerCase();
-        scanner.nextLine();
-        if (input.equals("y") || input.equals("yes")) return true;
-        return false;
     }
 
     private void start() {
         words.initData();
+        this.gameover = false;
         this.rng = random.nextInt(words.getWordCount());
         this.word = words.getWord(rng);
         this.lettersGuessed = new boolean[word.length()];
@@ -59,8 +52,19 @@ public class Game {
             scanner.nextLine();
             checkLetter(input.charAt(0), this.word);
             checkWin();
-            checkLose();
+            checkLose();            
         }
+    }
+
+    private boolean end() {
+        System.out.print("\nEnter \"y\" or \"yes\" to play again: ");
+        String input = scanner.next().toLowerCase();
+        scanner.nextLine();        
+        if (input.equals("y") || input.equals("yes")) {
+            System.out.println(input);
+            return true;
+        }
+        return false;
     }
 
     private void checkWin() {
@@ -72,14 +76,15 @@ public class Game {
             }
         }
         if (wordIsGuessed) {
-            System.out.println("You guessed the word!");
+            System.out.println("\nYou guessed the word!");
             this.gameover = true;
         }
     }
 
     private void checkLose() {
         if (display.getBodyparts() == 7) {
-            System.out.println("You're hung!");
+            display.draw(this.word, this.lettersGuessed);
+            System.out.println("\n\nYou're hung!");
             this.gameover = true;            
         }
     }
@@ -93,10 +98,10 @@ public class Game {
             }
         }
         if (correctGuess) {
-            System.out.println("Correct!");
+            System.out.println("\nCorrect!");
             return;
         }
-        System.out.println("Letter not found!");
+        System.out.println("\nLetter not found!");
         display.addBodypart();
     }    
 }
