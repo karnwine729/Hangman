@@ -1,23 +1,28 @@
 import java.util.Scanner;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Game {
-    private Display display;
-    private static Words words = new Words();
-    private String word;
     private Scanner scanner;
     private Random random;
+    private Display display;
+    private static Words words = new Words();
+    private String word;    
     private boolean gameover;
-    private boolean playAgain;
-    private boolean[] lettersGuessed;
+    private boolean playAgain;    
     private int rng;
+    private int bodyparts;
+    private boolean[] lettersGuessed;
+    private ArrayList<Character> incorrectGuesses;
+    private ArrayList<Character> correctGuesses;
 
     public Game() {
         this.display = new Display();
         this.scanner = new Scanner(System.in);
-        this.random = new Random();
-        this.gameover = false;
+        this.random = new Random();        
         this.playAgain = true;
+        this.incorrectGuesses = new ArrayList<Character>();
+        this.correctGuesses = new ArrayList<Character>();
     }
 
     public void play() {
@@ -34,19 +39,18 @@ public class Game {
         this.rng = random.nextInt(words.getWordCount());
         this.word = words.getWord(rng);
         this.lettersGuessed = new boolean[word.length()];
-        display.resetBodyparts();        
+        this.bodyparts = 0;        
         
         System.out.println("-".repeat(50));
         System.out.println("Welcome to Hungman!");
         System.out.println("Enter a letter into the console to start guessing the word.");
         System.out.println("Be careful: once you've guessed seven incorrect letters, you'll be hung!");
-        System.out.println("-".repeat(50));
-        System.out.println();
+        System.out.println("-".repeat(50));        
     }
 
     private void run() {
         while(!gameover) {            
-            display.draw(this.word, this.lettersGuessed);
+            display.draw(this.word, this.lettersGuessed, this.bodyparts);
             System.out.print("\n\nEnter a letter: ");
             String input = scanner.next();
             scanner.nextLine();
@@ -76,14 +80,15 @@ public class Game {
             }
         }
         if (wordIsGuessed) {
+            display.draw(this.word, this.lettersGuessed, this.bodyparts);
             System.out.println("\nYou guessed the word!");
             this.gameover = true;
         }
     }
 
     private void checkLose() {
-        if (display.getBodyparts() == 7) {
-            display.draw(this.word, this.lettersGuessed);
+        if (this.bodyparts == 7) {
+            display.draw(this.word, this.lettersGuessed, this.bodyparts);
             System.out.println("\n\nYou're hung!");
             this.gameover = true;            
         }
@@ -97,11 +102,6 @@ public class Game {
                 correctGuess = true;                
             }
         }
-        if (correctGuess) {
-            System.out.println("\nCorrect!");
-            return;
-        }
-        System.out.println("\nLetter not found!");
-        display.addBodypart();
-    }    
+        if (!correctGuess) this.bodyparts++;
+    }
 }

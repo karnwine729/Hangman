@@ -1,27 +1,12 @@
-public class Display {
-    private int bodyparts;
+public class Display {    
 
-    public Display() {
-        this.bodyparts = 0;        
-    }
+    public Display() {}
 
-    public void resetBodyparts() {
-        this.bodyparts = 0;
-    }
-
-    public void addBodypart() {
-        this.bodyparts++;
-    }
-
-    public int getBodyparts() {
-        return this.bodyparts;
-    }
-
-    public void draw(String word, boolean[] lettersGuessed) {
+    public void draw(String word, boolean[] lettersGuessed, int bodyparts) {
         printTopRows();
-        printHeadRow();
-        printTorsoRow();
-        printLegRow();
+        printHeadRow(bodyparts);
+        printTorsoRow(bodyparts);
+        printLegRow(bodyparts);
         printBottomRows();        
         printWord(word, lettersGuessed);
     }
@@ -39,11 +24,11 @@ public class Display {
     }
 
     private void printTopRows() {        
-        System.out.println("  +---+  ");
+        System.out.println("\n  +---+  ");
         System.out.println("  |   |  ");
     }
 
-    private void printHeadRow() {
+    private void printHeadRow(int bodyparts) {
         if (bodyparts == 0) {
             System.out.println("      |  ");
             return;
@@ -51,7 +36,7 @@ public class Display {
         System.out.println("  O   |  ");
     }
 
-    private void printTorsoRow() {
+    private void printTorsoRow(int bodyparts) {
         if (bodyparts <=1) {
             System.out.println("      |  ");
             return;
@@ -67,7 +52,7 @@ public class Display {
         System.out.println(" /|\\  |  ");
     }
 
-    private void printLegRow() {
+    private void printLegRow(int bodyparts) {
         if (bodyparts <= 4) {
             System.out.println("      |  ");
             return;
