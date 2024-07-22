@@ -73,8 +73,7 @@ public class Display {
             return;
         }
         if (bodyparts == 5) {
-            System.out.println(" /    |  "x
-            );
+            System.out.println(" /    |  ");
             return;
         }
         if (bodyparts == 6) {
