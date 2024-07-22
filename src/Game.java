@@ -108,8 +108,7 @@ public class Game {
     }
 
     private boolean checkPreviousLetters(char letter) {
-        if (this.correctGuesses.contains(letter) || this.incorrectGuesses.contains(letter)) return true;
-        return false;
+        return (this.correctGuesses.contains(letter) || this.incorrectGuesses.contains(letter));
     }
 
     private void checkNewLetter(char letter, String word) {
