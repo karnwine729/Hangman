@@ -15,14 +15,13 @@ public class Game {
     private boolean[] lettersGuessed;
     private ArrayList<Character> incorrectGuesses;
     private ArrayList<Character> correctGuesses;
+    private long runtime;
 
     public Game() {
         this.display = new Display();
         this.scanner = new Scanner(System.in);
         this.random = new Random();        
         this.playAgain = true;
-        this.incorrectGuesses = new ArrayList<Character>();
-        this.correctGuesses = new ArrayList<Character>();
     }
 
     public void play() {
@@ -39,13 +38,17 @@ public class Game {
         this.rng = random.nextInt(words.getWordCount());
         this.word = words.getWord(rng);
         this.lettersGuessed = new boolean[word.length()];
+        this.incorrectGuesses = new ArrayList<Character>();
+        this.correctGuesses = new ArrayList<Character>();
         this.bodyparts = 0;        
         
         System.out.println("-".repeat(50));
         System.out.println("Welcome to Hungman!");
         System.out.println("Enter a letter into the console to start guessing the word.");
         System.out.println("Be careful: once you've guessed seven incorrect letters, you'll be hung!");
-        System.out.println("-".repeat(50));        
+        System.out.println("-".repeat(50));
+
+        runtime = System.nanoTime();
     }
 
     private void run() {
@@ -94,7 +97,9 @@ public class Game {
         }
         if (wordIsGuessed) {
             display.draw(this.word, this.lettersGuessed, this.bodyparts, this.incorrectGuesses);
-            System.out.println("\nYou guessed the word!");
+            runtime = System.nanoTime() - runtime;
+            runtime /= Math.pow(10, 9);
+            System.out.println("\nYou guessed the word in " + runtime + " seconds!");
             this.gameover = true;
         }
     }
