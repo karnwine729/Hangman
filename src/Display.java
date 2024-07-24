@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Display {
     private StringBuilder[] displayStrings;
@@ -12,60 +10,60 @@ public class Display {
     }
 
     public void resetDisplay() {
-        displayStrings[0] = new StringBuilder("  +---+  ");
-        displayStrings[1] = new StringBuilder("  |   |  ");
-        displayStrings[2] = new StringBuilder("      |      ");
-        displayStrings[3] = new StringBuilder("      |  ");
-        displayStrings[4] = new StringBuilder("      |      Incorrect Guesses:");
-        displayStrings[5] = new StringBuilder("      |      ");
-        displayStrings[6] = new StringBuilder("=========");
+        this.displayStrings[0] = new StringBuilder("  +---+  ");
+        this.displayStrings[1] = new StringBuilder("  |   |  ");
+        this.displayStrings[2] = new StringBuilder("      |      ");
+        this.displayStrings[3] = new StringBuilder("      |  ");
+        this.displayStrings[4] = new StringBuilder("      |      Incorrect Guesses:");
+        this.displayStrings[5] = new StringBuilder("      |      ");
+        this.displayStrings[6] = new StringBuilder("=========");
         this.incorrectCount = 0;
         this.isFirstDraw = true;
     }
 
-    public void draw(int bodyparts, HashMap<Character, Boolean> wordMap, ArrayList<Character> incorrectGuesses) {                
-        if (isFirstDraw) {
-            for (int i = 0; i < wordMap.size(); i++) {
-                displayStrings[2].append('_');
+    public void draw(int bodyparts, char[][] wordArray, ArrayList<Character> incorrectGuesses) {                
+        if (this.isFirstDraw) {
+            for (int i = 0; i < wordArray.length; i++) {
+                this.displayStrings[2].append('_');
             }
-            isFirstDraw = false;
+            this.isFirstDraw = false;
         }
-        updateWord(wordMap);
+        updateWord(wordArray);
         updateIncorrectGuesses(incorrectGuesses);        
         addBodyparts(bodyparts);
         printRows(0, 6);        
     }
 
-    private void updateWord(HashMap<Character, Boolean> wordMap) {
-        int i = 0;
-        for (Map.Entry<Character, Boolean> me : wordMap.entrySet()) {
-            if (me.getValue() == true) displayStrings[2].setCharAt(13 + i, me.getKey());
-            i++;
+    private void updateWord(char[][] wordArray) {
+        for (int i = 0; i < wordArray.length; i++) {
+            if (wordArray[1][i] == '+') {
+                this.displayStrings[2].setCharAt(13 + i, wordArray[0][i]);
+            }
         }
     }
 
     private void addBodyparts(int bodyparts) {        
         switch (bodyparts) {
             case 1:
-                displayStrings[2].setCharAt(2,'O');                
+                this.displayStrings[2].setCharAt(2,'O');                
                 break;
             case 2:                
-                displayStrings[3].setCharAt(2,'|');                
+                this.displayStrings[3].setCharAt(2,'|');                
                 break;
             case 3:
-                displayStrings[3].setCharAt(1,'/');                
+                this.displayStrings[3].setCharAt(1,'/');                
                 break;
             case 4:
-                displayStrings[3].setCharAt(3,'\\');
+                this.displayStrings[3].setCharAt(3,'\\');
                 break;
             case 5:
-                displayStrings[4].setCharAt(1,'/');
+                this.displayStrings[4].setCharAt(1,'/');
                 break;
             case 6:
-                displayStrings[4].setCharAt(3,'\\');
+                this.displayStrings[4].setCharAt(3,'\\');
                 break;
             case 7:
-                displayStrings[4].setCharAt(2,'|');
+                this.displayStrings[4].setCharAt(2,'|');
                 break;
             default:
                 break;
@@ -73,28 +71,16 @@ public class Display {
     }
 
     private void updateIncorrectGuesses(ArrayList<Character> incorrectGuesses) {
-        if (incorrectGuesses.size() == 0 || incorrectGuesses.size() == incorrectCount) return;
+        if (incorrectGuesses.size() == 0 || incorrectGuesses.size() == this.incorrectCount) return;
 
-        incorrectCount = incorrectGuesses.size();
-        char latestIncorrectGuess = incorrectGuesses.get(incorrectCount - 1);
-        displayStrings[5].append(latestIncorrectGuess);    
+        this.incorrectCount = incorrectGuesses.size();
+        char latestIncorrectGuess = incorrectGuesses.get(this.incorrectCount - 1);
+        this.displayStrings[5].append(latestIncorrectGuess);    
     }
 
     private void printRows(int startingRow, int endingRow) {
         for (int i = startingRow; i <= endingRow; i++) {
-            System.out.println(displayStrings[i]);
+            System.out.println(this.displayStrings[i]);
         }
     }
-
-    // private void printWord(String word, boolean[] lettersGuessed) {
-        
-    //     System.out.println(word.length() + " letter word:");
-    //     for (int i = 0; i < word.length(); i++) {
-    //         if (lettersGuessed[i] == false) {
-    //             System.out.print("_");
-    //             continue;
-    //         }
-    //         System.out.print(word.charAt(i));
-    //     }        
-    // }   
 }
