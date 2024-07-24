@@ -26,14 +26,20 @@ public class Game {
 
     public void play() {
         while(playAgain) {            
+            initialize();
             start();
             run();
             playAgain = end();            
         }
     }
 
+    private void initialize() {
+        
+    }
+
     private void start() {
         words.initData();
+        display.resetDisplay();
         this.gameover = false;
         this.rng = random.nextInt(words.getWordCount());
         this.word = words.getWord(rng);
@@ -53,7 +59,7 @@ public class Game {
 
     private void run() {
         while(!gameover) {            
-            display.draw(this.word, this.lettersGuessed, this.bodyparts, this.incorrectGuesses);
+            display.draw(this.bodyparts, );
             char inputChar = promptUser();
             checkNewLetter(inputChar, this.word);            
             checkWin();
