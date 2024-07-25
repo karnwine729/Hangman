@@ -7,7 +7,8 @@ public class Game {
     private Random random;
     private Display display;
     private static Words words = new Words();
-    private char[][] wordArray;
+    private String word;
+    private boolean[] letterIsGuessed;
     private ArrayList<Character> incorrectGuesses;
     private ArrayList<Character> correctGuesses;    
     private boolean gameover;
@@ -36,17 +37,17 @@ public class Game {
         this.display.resetDisplay();
         this.gameover = false;
         int rng = random.nextInt(words.getWordCount());
-        createWordArray(words.getWord(rng));
+        this.word = words.getWord(rng);
+        initializeGuessBoolean(this.word);
         this.incorrectGuesses = new ArrayList<Character>();
         this.correctGuesses = new ArrayList<Character>();
         this.bodyparts = 0;
     }
 
-    private void createWordArray(String word) {
-        this.wordArray = new char[word.length()][word.length()];
+    private void initializeGuessBoolean(String word) {
+        this.letterIsGuessed = new boolean[word.length()];
         for (int i = 0; i < word.length(); i++) {
-            this.wordArray[0][i] = word.charAt(i);            
-            this.wordArray[1][i] = '-';            
+            this.letterIsGuessed[i] = false;
         }        
     }
 
@@ -61,7 +62,7 @@ public class Game {
 
     private void run() {
         while(!gameover) {            
-            display.draw(this.bodyparts, this.wordArray, this.incorrectGuesses);
+            display.draw(this.bodyparts, this.word, this.letterIsGuessed, this.incorrectGuesses);
             char inputChar = promptUser();
             checkNewLetter(inputChar);
             checkLose();
@@ -96,11 +97,11 @@ public class Game {
 
     private void checkWin() {        
         boolean wordIsGuessed = true;
-        for (int i = 0; i < this.wordArray.length; i++) {
-            if (this.wordArray[1][i] == '-') wordIsGuessed = false;
+        for (int i = 0; i < this.letterIsGuessed.length; i++) {
+            if (this.letterIsGuessed[i] == false) wordIsGuessed = false;
         }
         if (wordIsGuessed) {
-            display.draw(this.bodyparts, this.wordArray, this.incorrectGuesses);
+            display.draw(this.bodyparts, this.word, this.letterIsGuessed, this.incorrectGuesses);
             this.runtime = System.nanoTime() - runtime;
             runtime /= Math.pow(10, 9);
             System.out.println("\nYou guessed the word in " + runtime + " seconds!");
@@ -110,7 +111,7 @@ public class Game {
 
     private void checkLose() {
         if (this.bodyparts == 7) {
-            display.draw(this.bodyparts, this.wordArray, this.incorrectGuesses);
+            display.draw(this.bodyparts, this.word, this.letterIsGuessed, this.incorrectGuesses);
             System.out.println("\nYou're hung!");
             this.gameover = true;            
         }
@@ -122,9 +123,9 @@ public class Game {
 
     private void checkNewLetter(char letter) {
         boolean correctGuess = false;
-        for (int i = 0; i < this.wordArray.length; i++) {
-            if (this.wordArray[0][i] == letter) {
-                this.wordArray[1][i] = '+';
+        for (int i = 0; i < this.word.length(); i++) {
+            if (this.word.charAt(i) == letter) {
+                this.letterIsGuessed[i] = true;
                 this.correctGuesses.add(letter);
                 correctGuess = true;
             }

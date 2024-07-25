@@ -7,6 +7,8 @@ public class Display {
 
     public Display() {
         this.displayStrings = new StringBuilder[7];
+        this.incorrectCount = 0;
+        this.isFirstDraw = true;
     }
 
     public void resetDisplay() {
@@ -21,23 +23,23 @@ public class Display {
         this.isFirstDraw = true;
     }
 
-    public void draw(int bodyparts, char[][] wordArray, ArrayList<Character> incorrectGuesses) {                
+    public void draw(int bodyparts, String word, boolean[] letterIsGuessed, ArrayList<Character> incorrectGuesses) {                
         if (this.isFirstDraw) {
-            for (int i = 0; i < wordArray.length; i++) {
+            for (int i = 0; i < word.length(); i++) {
                 this.displayStrings[2].append('_');
             }
             this.isFirstDraw = false;
         }
-        updateWord(wordArray);
+        updateWord(word, letterIsGuessed);
         updateIncorrectGuesses(incorrectGuesses);        
         addBodyparts(bodyparts);
         printRows(0, 6);        
     }
 
-    private void updateWord(char[][] wordArray) {
-        for (int i = 0; i < wordArray.length; i++) {
-            if (wordArray[1][i] == '+') {
-                this.displayStrings[2].setCharAt(13 + i, wordArray[0][i]);
+    private void updateWord(String word, boolean[] letterIsGuessed) {        
+        for (int i = 0; i < letterIsGuessed.length; i++) {
+            if (letterIsGuessed[i] == true) {
+                this.displayStrings[2].setCharAt(13 + i, word.charAt(i));
             }
         }
     }
